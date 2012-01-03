@@ -20,10 +20,11 @@ if False:
 
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
-    if True or request.env.remote_addr=='127.0.0.1':
+    if request.env.remote_addr=='127.0.0.1':
         db = DAL('sqlite://fcheck.sqlite')
     else:
-        db = DAL('sqlite://fcheck.sqlite', folder='/home/dotcloud/data')
+        #db = DAL('sqlite://fcheck.sqlite', folder='/home/dotcloud/data')
+        db = DAL('mysql://fansubcheck:yE3xEAiFW9@fansubcheck.mysql.fluxflex.com:3306/fansubcheck')
 #        with open('/home/dotcloud/environment.json') as f:
 #            env = json.load(f)
 #        db = DAL('mysql://'+env['DOTCLOUD_DATA_MYSQL_LOGIN']+':'+env['DOTCLOUD_DATA_MYSQL_PASSWORD']+"@"+env['DOTCLOUD_DATA_MYSQL_HOST']+":"+str(env['DOTCLOUD_DATA_MYSQL_PORT'])+'/mysql')
