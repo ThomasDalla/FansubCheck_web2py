@@ -1,0 +1,16 @@
+{{response.files.append(URL(r=request,c='static',f='js/ext/resources/css/ext-all.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/examples/ux/grid/css/GridFilters.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/examples/ux/grid/css/RangeMenu.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/bootstrap.js'))}}
+{{response.files.append(URL(r=request,c='static',f='js/qc/subs_list.js'))}}
+
+{{extend 'layout.html'}}
+<!--script language="javascript">
+    var id= {{=id}};
+    var key={{=key}};
+</script-->
+<div id="comments_list"></div><br />
+<div id="add_comment_form" align="center"></div>
+<div align="center">Link to the video: <a href="{{=episode.video_link}}" target="_blank">{{=episode.video_link}}</a></div>
+<div id="subs_list" align="center">Loading subs...</div>
+<div align="center">Link to the video: <a href="{{=episode.video_link}}" target="_blank">{{=episode.video_link}}</a></div>

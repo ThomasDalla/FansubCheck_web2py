@@ -1,0 +1,8 @@
+from gluon.contrib.populate import populate
+if db(db.auth_user).isempty():
+     populate(db.auth_user,10)
+     populate(db.t_comments,10)
+     populate(db.t_subs,10)
+     populate(db.t_episodes,10)
+     populate(db.t_balises,10)
+     populate(db.t_error_types,10)

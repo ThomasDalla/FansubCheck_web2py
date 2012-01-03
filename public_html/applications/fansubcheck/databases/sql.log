@@ -1,0 +1,748 @@
+timestamp: 2011-12-25T15:48:47.178507
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(512),
+    first_name CHAR(512),
+    last_name CHAR(512),
+    email CHAR(512),
+    password CHAR(512),
+    created_on TIMESTAMP,
+    modified_on TIMESTAMP,
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2011-12-25T15:48:47.191963
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2011-12-25T15:48:47.205243
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.221624
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-25T15:48:47.251066
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2011-12-25T15:48:47.275630
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2011-12-25T15:48:47.325491
+CREATE TABLE balise(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.362186
+CREATE TABLE balise_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES balise(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.395374
+CREATE TABLE error_type(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.436929
+CREATE TABLE error_type_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES error_type(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.465241
+CREATE TABLE comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sub INTEGER REFERENCES sub(id) ON DELETE CASCADE,
+    user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    date_added TIMESTAMP,
+    error_types TEXT,
+    balises TEXT,
+    content TEXT NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.486061
+CREATE TABLE comment_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sub INTEGER REFERENCES sub(id) ON DELETE CASCADE,
+    user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    date_added TIMESTAMP,
+    error_types TEXT,
+    balises TEXT,
+    content TEXT NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES comment(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.507864
+CREATE TABLE sub(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    episode INTEGER REFERENCES episode(id) ON DELETE CASCADE,
+    start_time CHAR(512),
+    end_time CHAR(512),
+    style CHAR(512),
+    actor CHAR(512),
+    is_comment CHAR(1),
+    text CHAR(512),
+    is_finalized CHAR(1),
+    needs_discussion CHAR(1),
+    comments_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.529306
+CREATE TABLE sub_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    episode INTEGER REFERENCES episode(id) ON DELETE CASCADE,
+    start_time CHAR(512),
+    end_time CHAR(512),
+    style CHAR(512),
+    actor CHAR(512),
+    is_comment CHAR(1),
+    text CHAR(512),
+    is_finalized CHAR(1),
+    needs_discussion CHAR(1),
+    comments_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES sub(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.567723
+CREATE TABLE episode(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file CHAR(512),
+    name CHAR(512) NOT NULL,
+    video_link CHAR(512),
+    comments_nb INTEGER,
+    subs_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_h CHAR(1),
+    is_public CHAR(1),
+    allow_qcteam CHAR(1),
+    is_finished CHAR(1),
+    key CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:48:47.611303
+CREATE TABLE episode_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file CHAR(512),
+    name CHAR(512) NOT NULL,
+    video_link CHAR(512),
+    comments_nb INTEGER,
+    subs_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_h CHAR(1),
+    is_public CHAR(1),
+    allow_qcteam CHAR(1),
+    is_finished CHAR(1),
+    key CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES episode(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.085834
+CREATE TABLE plugin_attachments_attachment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    name CHAR(512),
+    file CHAR(512),
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-25T15:50:00.103664
+CREATE TABLE plugin_comments_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    parent_node INTEGER,
+    body CHAR(512),
+    deleted CHAR(1),
+    votes INTEGER,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-25T15:50:00.117888
+CREATE TABLE plugin_rating_master(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    rating DOUBLE,
+    counter INTEGER
+);
+success!
+timestamp: 2011-12-25T15:50:00.134452
+CREATE TABLE plugin_rating_aux(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    master INTEGER REFERENCES plugin_rating_master(id) ON DELETE CASCADE,
+    rating DOUBLE,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.151483
+CREATE TABLE plugin_tagging_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    links INTEGER,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-25T15:50:00.167737
+CREATE TABLE plugin_tagging_link(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag INTEGER REFERENCES plugin_tagging_tag(id) ON DELETE CASCADE,
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-25T15:50:00.178877
+CREATE TABLE plugin_tagging_subscription(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    auth_user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    tag INTEGER REFERENCES plugin_tagging_tag(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.201447
+CREATE TABLE plugin_wiki_page(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug CHAR(512),
+    title CHAR(512),
+    is_public CHAR(1),
+    body TEXT,
+    role INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    changelog CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.226638
+CREATE TABLE plugin_wiki_page_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    current_record INTEGER REFERENCES plugin_wiki_page(id) ON DELETE CASCADE,
+    slug CHAR(512),
+    title CHAR(512),
+    is_public CHAR(1),
+    body TEXT,
+    role INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    changelog CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.240967
+CREATE TABLE plugin_wiki_attachment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    name CHAR(512),
+    filename CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.258139
+CREATE TABLE plugin_wiki_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    body CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.269587
+CREATE TABLE plugin_wiki_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    links INTEGER,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-25T15:50:00.283315
+CREATE TABLE plugin_wiki_link(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag INTEGER REFERENCES plugin_wiki_tag(id) ON DELETE CASCADE,
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-25T15:50:00.296036
+CREATE TABLE plugin_wiki_rating(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    rating DOUBLE,
+    counter INTEGER
+);
+success!
+timestamp: 2011-12-25T15:50:00.315811
+CREATE TABLE plugin_wiki_rating_aux(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    master INTEGER REFERENCES plugin_wiki_rating(id) ON DELETE CASCADE,
+    rating DOUBLE,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.086030
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(512),
+    first_name CHAR(512),
+    last_name CHAR(512),
+    email CHAR(512),
+    password CHAR(512),
+    created_on TIMESTAMP,
+    modified_on TIMESTAMP,
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2011-12-31T13:20:37.125797
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2011-12-31T13:20:37.147889
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.166606
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-31T13:20:37.194519
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2011-12-31T13:20:37.217742
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2011-12-31T13:20:37.250989
+CREATE TABLE balise_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES balise(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.277779
+CREATE TABLE error_type_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES error_type(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.294129
+CREATE TABLE comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sub INTEGER REFERENCES sub(id) ON DELETE CASCADE,
+    user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    date_added TIMESTAMP,
+    error_types TEXT,
+    balises TEXT,
+    content TEXT NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.308250
+CREATE TABLE comment_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sub INTEGER REFERENCES sub(id) ON DELETE CASCADE,
+    user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    date_added TIMESTAMP,
+    error_types TEXT,
+    balises TEXT,
+    content TEXT NOT NULL,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES comment(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.327018
+CREATE TABLE sub(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    episode INTEGER REFERENCES episode(id) ON DELETE CASCADE,
+    start_time CHAR(512),
+    end_time CHAR(512),
+    style CHAR(512),
+    actor CHAR(512),
+    is_comment CHAR(1),
+    text CHAR(512),
+    is_finalized CHAR(1),
+    needs_discussion CHAR(1),
+    comments_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.347857
+CREATE TABLE sub_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    episode INTEGER REFERENCES episode(id) ON DELETE CASCADE,
+    start_time CHAR(512),
+    end_time CHAR(512),
+    style CHAR(512),
+    actor CHAR(512),
+    is_comment CHAR(1),
+    text CHAR(512),
+    is_finalized CHAR(1),
+    needs_discussion CHAR(1),
+    comments_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES sub(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.371111
+CREATE TABLE episode(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file CHAR(512),
+    name CHAR(512) NOT NULL,
+    video_link CHAR(512),
+    comments_nb INTEGER,
+    subs_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_h CHAR(1),
+    is_public CHAR(1),
+    allow_qcteam CHAR(1),
+    is_finished CHAR(1),
+    key CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.394884
+CREATE TABLE episode_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    file CHAR(512),
+    name CHAR(512) NOT NULL,
+    video_link CHAR(512),
+    comments_nb INTEGER,
+    subs_nb INTEGER,
+    lastcomment_date TIMESTAMP,
+    is_h CHAR(1),
+    is_public CHAR(1),
+    allow_qcteam CHAR(1),
+    is_finished CHAR(1),
+    key CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    current_record INTEGER REFERENCES episode(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.434104
+CREATE TABLE plugin_attachments_attachment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    name CHAR(512),
+    file CHAR(512),
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-31T13:20:37.467024
+CREATE TABLE plugin_comments_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    parent_node INTEGER,
+    body CHAR(512),
+    deleted CHAR(1),
+    votes INTEGER,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-31T13:20:37.489346
+CREATE TABLE plugin_rating_master(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    rating DOUBLE,
+    counter INTEGER
+);
+success!
+timestamp: 2011-12-31T13:20:37.502930
+CREATE TABLE plugin_rating_aux(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    master INTEGER REFERENCES plugin_rating_master(id) ON DELETE CASCADE,
+    rating DOUBLE,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.518028
+CREATE TABLE plugin_tagging_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    links INTEGER,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    created_on TIMESTAMP
+);
+success!
+timestamp: 2011-12-31T13:20:37.537514
+CREATE TABLE plugin_tagging_link(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag INTEGER REFERENCES plugin_tagging_tag(id) ON DELETE CASCADE,
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-31T13:20:37.554242
+CREATE TABLE plugin_tagging_subscription(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    auth_user INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    tag INTEGER REFERENCES plugin_tagging_tag(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.585925
+CREATE TABLE plugin_wiki_page(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug CHAR(512),
+    title CHAR(512),
+    is_public CHAR(1),
+    body TEXT,
+    role INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    changelog CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.622278
+CREATE TABLE plugin_wiki_page_archive(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    current_record INTEGER REFERENCES plugin_wiki_page(id) ON DELETE CASCADE,
+    slug CHAR(512),
+    title CHAR(512),
+    is_public CHAR(1),
+    body TEXT,
+    role INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
+    changelog CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.664010
+CREATE TABLE plugin_wiki_attachment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    name CHAR(512),
+    filename CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.694573
+CREATE TABLE plugin_wiki_comment(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    body CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.727234
+CREATE TABLE plugin_wiki_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    links INTEGER,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-12-31T13:20:37.759914
+CREATE TABLE plugin_wiki_link(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tag INTEGER REFERENCES plugin_wiki_tag(id) ON DELETE CASCADE,
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-12-31T13:20:37.791640
+CREATE TABLE plugin_wiki_rating(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tablename CHAR(512),
+    record_id INTEGER,
+    rating DOUBLE,
+    counter INTEGER
+);
+success!
+timestamp: 2011-12-31T13:20:37.815448
+CREATE TABLE plugin_wiki_rating_aux(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    master INTEGER REFERENCES plugin_wiki_rating(id) ON DELETE CASCADE,
+    rating DOUBLE,
+    created_by INTEGER REFERENCES auth_user(id) ON DELETE CASCADE
+);
+success!

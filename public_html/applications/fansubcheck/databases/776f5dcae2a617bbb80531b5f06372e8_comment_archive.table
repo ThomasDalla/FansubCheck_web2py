@@ -1,0 +1,143 @@
+(dp1
+S'modified_by'
+p2
+(dp3
+S'type'
+p4
+S'reference auth_user'
+p5
+sS'sortable'
+p6
+I12
+sS'sql'
+p7
+S'INTEGER REFERENCES auth_user(id) ON DELETE CASCADE'
+p8
+ssS'sub'
+p9
+(dp10
+g4
+S'reference sub'
+p11
+sg6
+I2
+sg7
+S'INTEGER REFERENCES sub(id) ON DELETE CASCADE'
+p12
+ssS'current_record'
+p13
+(dp14
+g4
+S'reference comment'
+p15
+sg6
+I13
+sg7
+S'INTEGER REFERENCES comment(id) ON DELETE CASCADE'
+p16
+ssS'is_active'
+p17
+(dp18
+g4
+S'boolean'
+p19
+sg6
+I8
+sg7
+S'CHAR(1)'
+p20
+ssS'created_by'
+p21
+(dp22
+g4
+g5
+sg6
+I10
+sg7
+S'INTEGER REFERENCES auth_user(id) ON DELETE CASCADE'
+p23
+ssS'content'
+p24
+(dp25
+g4
+S'text'
+p26
+sg6
+I7
+sg7
+S'TEXT NOT NULL'
+p27
+ssS'created_on'
+p28
+(dp29
+g4
+S'datetime'
+p30
+sg6
+I9
+sg7
+S'TIMESTAMP'
+p31
+ssS'user'
+p32
+(dp33
+g4
+S'reference auth_user'
+p34
+sg6
+I3
+sg7
+S'INTEGER REFERENCES auth_user(id) ON DELETE CASCADE'
+p35
+ssS'modified_on'
+p36
+(dp37
+g4
+g30
+sg6
+I11
+sg7
+S'TIMESTAMP'
+p38
+ssS'date_added'
+p39
+(dp40
+g4
+g30
+sg6
+I4
+sg7
+S'TIMESTAMP'
+p41
+ssS'balises'
+p42
+(dp43
+g4
+S'list:reference balise'
+p44
+sg6
+I6
+sg7
+S'TEXT'
+p45
+ssS'error_types'
+p46
+(dp47
+g4
+S'list:reference error_type'
+p48
+sg6
+I5
+sg7
+g45
+ssS'id'
+p49
+(dp50
+g4
+g49
+sg6
+I1
+sg7
+S'INTEGER PRIMARY KEY AUTOINCREMENT'
+p51
+ss.

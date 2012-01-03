@@ -1,0 +1,13 @@
+{{response.files.append(URL(r=request,c='static',f='js/ext/resources/css/ext-all.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/examples/ux/grid/css/GridFilters.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/examples/ux/grid/css/RangeMenu.css'))}}
+{{response.files.append(URL(r=request,c='static',f='js/ext/bootstrap.js'))}}
+{{response.files.append(URL(r=request,c='static',f='js/qc/qc_list.js'))}}
+
+{{extend 'layout.html'}}
+
+{{if publicEpisodesNb>0:}}
+<div id="qc_list" align="center">Loading the public QC list...</div>
+{{else:}}
+<div align="center">There are no public QC yet... Upload one!</div>
+{{pass}}
